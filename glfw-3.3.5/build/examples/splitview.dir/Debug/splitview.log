@@ -1,0 +1,5 @@
+﻿  Building Custom Rule C:/glfw-3.3.5/examples/CMakeLists.txt
+  splitview.c
+  glad_gl.c
+  Gerando Código...
+  splitview.vcxproj -> C:\glfw-3.3.5\build\examples\Debug\splitview.exe

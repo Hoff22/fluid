@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(fluid)
+
+file(GLOB fluid_SRC CONFIGURE_DEPENDS 
+	"*.h"
+    "*.c"
+    "*.cpp"
+    "*.hpp"
+)
+
+add_executable(fluid ${fluid_SRC})
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(./glfw-3.3.5)
+add_subdirectory(./imgui)
+
+target_link_libraries(fluid PUBLIC glfw imgui)
+
+target_compile_features(fluid PRIVATE cxx_std_17)
+

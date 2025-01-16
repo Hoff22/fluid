@@ -1,0 +1,6 @@
+﻿  Building Custom Rule C:/glfw-3.3.5/tests/CMakeLists.txt
+  windows.c
+  getopt.c
+  glad_gl.c
+  Gerando Código...
+  windows.vcxproj -> C:\glfw-3.3.5\build\tests\Debug\windows.exe
