@@ -113,6 +113,14 @@ void main(void){
 		}
 	}
 
+	vec2 att_p = vec2(values[0], values[1]);
+	float att_r = values[2];
+	float att_f = values[3];
+	
+	float obs_dst = max(0.0,(length(pixel_pos - att_p) - att_r) / length(scr));
+
+	d += 100.0 * smoothKernel(values[11], obs_dst) * mass;
+
 	// for(int i = 0; i < dims.y; i++){
 	// 	for(int j = 0; j < dims.x; j++){
 	// 		vec4 p_cur = imageLoad(parts, ivec2(j,i));
@@ -135,8 +143,8 @@ void main(void){
 	float a = ((current_dens - values[9]) / values[9]) * 0.5 + 0.5;
 
 	vec3 pixel_color = vec3(a, 1.0-a, d / (dims.x*dims.y));
-	pixel_color = vec3(g, d / (dims.x*dims.y));
-	// pixel_color = vec3(0.0,0.0, d / (dims.x*dims.y));
+	// pixel_color = vec3(g, d / (dims.x*dims.y));
+	pixel_color = vec3(0.0,0.0, d / (dims.x*dims.y));
 	// pixel_color = vec3(vec2(start_idx[hashCell(cell_pos)] == 1012 ? : 1.0, 0.0), 0.0);
 	// if(start_idx[hashCell(cell_pos)] == 1012) pixel_color = vec3(1.0);
 	// else pixel_color = vec3(0.0);

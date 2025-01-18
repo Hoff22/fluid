@@ -23,6 +23,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 using namespace std;
 
 #define TEX_WIDTH 64
@@ -226,6 +229,11 @@ int initGLFW(GLFWwindow* &window, string program_window_name) {
 		cout << "Failed to initialize GLAD" << endl;
 		return -1;
 	}
+
+	GLFWimage images[1]; 
+	images[0].pixels = stbi_load("fluid.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+	glfwSetWindowIcon(window, 1, images); 
+	stbi_image_free(images[0].pixels);
 	
 	return 0;
 }
@@ -476,9 +484,7 @@ int main(int argc, char** argv) {
 
 //	debug -
 
-	// GLuint densityGlobalTexture;
-	// initTexture(&densityGlobalTexture, 4, SCREEN_WIDTH/ 4, SCREEN_HEIGHT/ 4);
-	// ComputeShader cs_density_global = ComputeShader("shaders/density_compute_global.glsl");
+	// GLuint densitycs_density_global = ComputeShader("shaders/density_compute_global.glsl");
 
 //	--
 
@@ -516,11 +522,11 @@ int main(int argc, char** argv) {
 			glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(shaderData), &sd);
 			sort_grid(&sd);
 
-			for(int i = 0; i < TEX_WIDTH*TEX_HEIGHT; i++){
-				if(sd.cells[i].x == 63){
-					cout << i << ": " << "("<< sd.cells[i].x <<", " << sd.cells[i].y << ")" << endl;
-				}
-			}
+			// for(int i = 0; i < TEX_WIDTH*TEX_HEIGHT; i++){
+			// 	if(sd.cells[i].x == 63){
+			// 		cout << i << ": " << "("<< sd.cells[i].x <<", " << sd.cells[i].y << ")" << endl;
+			// 	}
+			// }
 		}
 
 		sd.values[0] = mousePos.x;

@@ -8,5 +8,5 @@ void main(void)
 
     vec3 c = mix(c1, c2, 0.6);
 
-    color = vec4(c,1.0);
+    color = vec4(c,0.0);
 }

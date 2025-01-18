@@ -89,6 +89,7 @@ float compute_density(vec2 pos, ivec2 idx){
 			}
 		}
 	}
+
 	return d;
 }
 
@@ -120,13 +121,24 @@ vec2 compute_gradient(vec2 pos, float current_dens, ivec2 idx){
 		}
 	}
 
-	vec2 att_p = vec2(values[0], values[1]);
-	float att_r = values[2];
-	
-	vec2 dir = normalize(pos-att_p);
-	vec2 o_p = att_p + dir * att_r;
-	float dst = length(pos / scr  - o_p / scr);
-	g += -sharedPressure(current_dens, 2.0) * dir * smoothKernelDeriv(values[11],dst) * mass;
+	// vec2 att_p = vec2(values[0], values[1]);
+	// float att_r = values[2];
+	// float att_f = values[3];
+
+	// if(length(pos - att_p) < att_r + 5.0){
+
+	// 	float obs_dst = (length(pos - att_p) - att_r) / length(scr);
+	// 	if(obs_dst < 0.0) obs_dst = 0.0;
+		
+	// 	float obs_d = 1.0 * smoothKernel(values[11], obs_dst) * mass;
+		
+	// 	float obs_p = pressure(obs_d);
+
+	// 	vec2 obs_dir = normalize(pos - att_p);
+
+	// 	g += -obs_p * obs_dir * smoothKernelDeriv(values[11], obs_dst) * 2 / obs_d;
+	// }
+
 
 	return g;
 }

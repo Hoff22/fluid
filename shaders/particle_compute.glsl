@@ -31,7 +31,8 @@ float random (vec2 uv)
 }
 
 float smoothKernel(float radius, float dst){
-	return (max(radius - dst, 0) / radius);
+	float f = (max(radius - dst, 0) / radius);
+	return 1.0-f*f;
 }
 
 void main(void){
@@ -57,11 +58,12 @@ void main(void){
 	acc += g / (dens + 0.00001);
 
 	// attractor
-	// if(length(p.xy - att_p) < att_r && att_f > 0.00001){
-	// 	vec2 dir = (att_p - p.xy); 
-	// 	acc += dir * smoothKernel(att_r, length(p.xy - att_p)) * att_f;
-	// 	acc -= vec2(0.0,gravity);
-	// }
+	if(length(p.xy - att_p) < att_r && att_f > 0.00001){
+		vec2 dir = (att_p - p.xy); 
+		acc += dir * smoothKernel(att_r, length(p.xy - att_p)) * att_f * 10;
+		// acc -= vec2(0.0,gravity);
+		drag_f = 0.95;
+	}
 
 	vec2 newPos = p.xy + p.zw * delta_step;
 
@@ -70,15 +72,15 @@ void main(void){
 
 	vec2 newSpeed = p.zw * drag_f + acc * delta_step;
 	
-	// obstacle
-	if(length(p.xy - att_p) < att_r && att_f > 0.00001){
-		vec2 normal = normalize(p.xy - att_p);
-		newPos = att_p + normal * att_r;
-		newSpeed = normal * length(p.xy - att_p) * 5;
-	}
-
 	newPos = clamp(newPos, vec2(0), vec2(values[5],values[6]));
 	newSpeed = clamp(newSpeed, vec2(-mx_speed), vec2(mx_speed));
+	
+	// obstacle
+	// float dst = length(p.xy - att_p);
+	// if(dst < att_r){
+	// 	vec2 normal = normalize(p.xy - att_p);
+	// 	newPos = att_p + normal * dst * 1.1;
+	// }
 	
 	cells[particleLinearIdx(p_idx)] = ivec2(hashCell(newPos), particleLinearIdx(p_idx));
 	
