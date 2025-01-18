@@ -119,6 +119,15 @@ vec2 compute_gradient(vec2 pos, float current_dens, ivec2 idx){
 			}
 		}
 	}
+
+	vec2 att_p = vec2(values[0], values[1]);
+	float att_r = values[2];
+	
+	vec2 dir = normalize(pos-att_p);
+	vec2 o_p = att_p + dir * att_r;
+	float dst = length(pos / scr  - o_p / scr);
+	g += -sharedPressure(current_dens, 2.0) * dir * smoothKernelDeriv(values[11],dst) * mass;
+
 	return g;
 }
 

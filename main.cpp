@@ -44,7 +44,7 @@ int SCREEN_HEIGHT = 1200;
 int button = 0;
 int pause = 0;
 int little_step = 0;
-int sync_sim = 0;
+bool sync_sim = 0;
 glm::vec2 mousePos;
 
 ComputeShader cs_particles;
@@ -105,9 +105,7 @@ void optionsWindow(){
 		if(ImGui::Button("Shaders")){
 			button = 1;
 		}
-		if(ImGui::Button("sync sim")){
-			sync_sim = 1;
-		}
+		ImGui::Checkbox("sync sim", &sync_sim);
 		ImGui::SliderFloat("size", &sd.values[7], 0.025, 1.0);
 		ImGui::SliderFloat("gravity", &sd.values[8], 0.0, 10.0);
 		ImGui::SliderFloat("pressure", &sd.values[9], 0.0, 1.0);
@@ -320,8 +318,6 @@ void drawParticles(){
 		glVertexArrayElementBuffer(VAO, EBO);
 	}
 
-	glPointSize(32.0f);
-
 	sh.use();
 	glBindTextureUnit(0, particlesTex);
 	sh.setInt("parts", 0);
@@ -366,6 +362,44 @@ void drawTextureQuad(GLuint texture){
 	sh.setInt("tex", 0);
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, sizeof(quad_indices) / sizeof(quad_indices[0]), GL_UNSIGNED_INT, 0);
+}
+
+void drawCircle(glm::vec2 pos, float radius){
+	static Shader sh(vert, frag);
+	static GLuint positions_VBO = 0;
+	vector<GLfloat> positions; 
+	positions.push_back((pos.x / SCREEN_WIDTH) * 2 - 1.0);
+	positions.push_back((pos.y / SCREEN_HEIGHT) * 2 - 1.0);
+
+	glBindVertexArray(0);
+
+	if(!positions_VBO){
+		glGenBuffers(1, &positions_VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, positions_VBO);
+		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(GLfloat), positions.data(), GL_DYNAMIC_DRAW);
+	}
+	else{
+		glBindBuffer(GL_ARRAY_BUFFER, positions_VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, positions.size() * sizeof(GLfloat), positions.data());
+	}
+
+	glPointSize(radius);
+
+	// enable shader
+	sh.use();
+	// bind the data that will be passed to attribute 0
+	glBindBuffer(GL_ARRAY_BUFFER, positions_VBO);
+	// substitute data if needeed
+	// glBufferSubData(GL_ARRAY_BUFFER, 0, positions.size() * sizeof(GLfloat), positions.data());
+	// enable attribute 0 for next draw call
+	glEnableVertexAttribArray(0);
+	// define the attribute caracteristics (type, size, stride, etc...)
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	// draw poits
+	glDrawArrays(GL_POINTS, 0, (int)positions.size()/2);
+	// unbind data buffer
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableVertexAttribArray(0);
 }
 
 void initTexture(GLuint* texture, int unit, int WIDTH, int HEIGHT){
@@ -430,11 +464,11 @@ int main(int argc, char** argv) {
 	sd.values[3] = 0.1;
 	sd.values[5] = SCREEN_WIDTH;
 	sd.values[6] = SCREEN_HEIGHT;
-	sd.values[7] = 0.2;
-	sd.values[8] = 0.4;
+	sd.values[7] = 0.06;
+	sd.values[8] = 6.5;
 	sd.values[9] = 0.72;
-	sd.values[10] = 0.1;
-	sd.values[11] = 0.1;
+	sd.values[10] = 2.0;
+	sd.values[11] = 0.125;
 	sd.values[12] = 0.1;
 	sd.values[13] = 0.995;
 
@@ -518,6 +552,7 @@ int main(int argc, char** argv) {
 		// drawTextureQuad(densityGlobalTexture);
 		// drawTextureQuad(densityTex);
 		drawParticles();
+		drawCircle(mousePos,sd.values[2]*2);
 		
 		renderImguiFrame(window);
 		glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -561,7 +596,7 @@ void step(shaderData* sd, ComputeShader* part, ComputeShader* dens, ComputeShade
 	double deltaTime = glfwGetTime() - curTime;
 	curTime = glfwGetTime();
 
-	if(deltaTime > 0.005 && sync_sim) return;
+	if(deltaTime > 1.0/60.0 && sync_sim) return;
 
 	sd->values[4] = (float)deltaTime;
 	sd->values[5] = SCREEN_WIDTH;
