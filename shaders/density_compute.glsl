@@ -1,6 +1,6 @@
-#version 460
+#version 460   
 
-#define CELL 8
+#define CELL 32
 #define N 64
 
 layout(local_size_x = 8, local_size_y = 4, local_size_z = 1) in;
@@ -37,6 +37,11 @@ float smoothKernel(float radius, float dst){
 	float volume = PI * pow(radius, 4) / 6;
 	float value = max(0, (radius - dst) * (radius - dst));
 	return value / volume;
+}
+
+float simpleSmooth(float radius, float dst){
+	float f = (max(radius - dst, 0) / radius);
+	return 1.0-f*f;
 }
 
 float smoothKernelDeriv(float radius, float dst){
@@ -85,6 +90,7 @@ float compute_density(vec2 pos, ivec2 idx){
 				vec4 p_cur = imageLoad(parts, other_idx);
 				vec2 other_pos = p_cur.xy + p_cur.zw * 1 / 60.0;
 				float dst = length(pos / scr  - other_pos / scr);
+				if(dst < 0.00001) continue;
 				d += smoothKernel(values[11], dst) * mass ;
 			}
 		}
@@ -112,8 +118,9 @@ vec2 compute_gradient(vec2 pos, float current_dens, ivec2 idx){
 				ivec2 other_idx = particleCoordinateIdx(cells[k].y);
 				if(other_idx == idx) continue;
 				vec4 p_cur = imageLoad(parts, other_idx);
-				vec2 other_pos = p_cur.xy + p_cur.zw * 1/60.0;
+				vec2 other_pos = p_cur.xy + p_cur.zw * 1.0/60.0;
 				float dst = length(pos / scr  - other_pos / scr);
+				if(dst < 0.00001) continue;
 				float dens = imageLoad(dens_grad, other_idx).x;
 				vec2 dir = dst > 0.000001 ? normalize(pos - other_pos) : randomDir(other_pos);
 				g += -sharedPressure(current_dens, dens) * dir * smoothKernelDeriv(values[11],dst) * mass / (dens + 0.000001);
@@ -121,29 +128,11 @@ vec2 compute_gradient(vec2 pos, float current_dens, ivec2 idx){
 		}
 	}
 
-	// vec2 att_p = vec2(values[0], values[1]);
-	// float att_r = values[2];
-	// float att_f = values[3];
-
-	// if(length(pos - att_p) < att_r + 5.0){
-
-	// 	float obs_dst = (length(pos - att_p) - att_r) / length(scr);
-	// 	if(obs_dst < 0.0) obs_dst = 0.0;
-		
-	// 	float obs_d = 1.0 * smoothKernel(values[11], obs_dst) * mass;
-		
-	// 	float obs_p = pressure(obs_d);
-
-	// 	vec2 obs_dir = normalize(pos - att_p);
-
-	// 	g += -obs_p * obs_dir * smoothKernelDeriv(values[11], obs_dst) * 2 / obs_d;
-	// }
-
-
 	return g;
 }
 
-void main(void){
+// entry point
+void densityKernel(void){
 	ivec2 dims = imageSize(parts);
 	ivec2 p_idx = ivec2(gl_GlobalInvocationID.xy);
 	float delta_step = values[4];
@@ -154,8 +143,70 @@ void main(void){
 
 	float current_dens = imageLoad(dens_grad, p_idx).x;
 
-	float d = compute_density(p_pos + p.zw * 1/60.0, p_idx);
-	vec2 g = compute_gradient(p_pos + p.zw * 1/60.0, current_dens, p_idx);
+	float d = compute_density(p_pos + p.zw * 1.0/60.0, p_idx);
+	vec2 g = compute_gradient(p_pos + p.zw * 1.0/60.0, current_dens, p_idx);
 
-	imageStore(dens_grad, p_idx, vec4(d / (dims.x*dims.y), g, 1.0) );
+	imageStore(dens_grad, p_idx, vec4(d / (N*N), g, 1.0) );
+}
+
+void particleKernel(void){
+	float gravity = -values[8] * values[6]; // 2.4
+	float drag_f = values[13]; // 0.995;
+	float mx_speed = values[6] * sqrt(2) ;
+
+	ivec2 p_idx = ivec2(gl_GlobalInvocationID.xy);
+
+	vec4 p = imageLoad(parts, p_idx);
+	vec2 g = imageLoad(dens_grad, p_idx).yz;
+
+	vec2 att_p = vec2(values[0], values[1]);
+	float att_r = values[2];
+	float att_f = values[3];
+	float delta_step = values[4];
+
+	vec2 acc = vec2(0.0,gravity);
+
+	float dens = imageLoad(dens_grad, p_idx).x;
+
+	acc += g / (dens + 0.00001);
+
+	// attractor
+	if(length(p.xy - att_p) < att_r && att_f > 0.00001){
+		vec2 dir = (att_p - p.xy); 
+		acc += dir * simpleSmooth(att_r, length(p.xy - att_p)) * att_f * 10;
+		// acc -= vec2(0.0,gravity);
+		drag_f = 0.95;
+	}
+
+	vec2 newPos = p.xy + p.zw * delta_step;
+
+
+	float drag = mix(0.9999, 0.995, dens * dens);
+
+	vec2 newSpeed = p.zw * drag_f + acc * delta_step;
+	
+	newPos = clamp(newPos, vec2(0), vec2(values[5],values[6]));
+	newSpeed = clamp(newSpeed, vec2(-mx_speed), vec2(mx_speed));
+	
+	// obstacle
+	// float dst = length(p.xy - att_p);
+	// if(dst < att_r){
+	// 	vec2 normal = normalize(p.xy - att_p);
+	// 	newPos = att_p + normal * dst * 1.1;
+	// }
+	
+	cells[particleLinearIdx(p_idx)] = ivec2(hashCell(newPos), particleLinearIdx(p_idx));
+	
+	imageStore(parts, p_idx, vec4(newPos, newSpeed));
+}
+
+void initKernel(void){
+	ivec2 p_idx = ivec2(gl_GlobalInvocationID.xy);
+	vec2 uv = vec2((1.0 * p_idx.x) / imageSize(parts).x, (1.0 * p_idx.y) / imageSize(parts).y);
+
+	
+	vec2 randomPos = vec2((random(uv.xy) * 0.5 + 0.5) * values[5],(random(uv.yx) * 0.5 + 0.5) * values[6]);
+	imageStore(parts, p_idx, vec4(randomPos, 0.0,0.0));
+
+	cells[particleLinearIdx(p_idx)] = ivec2(hashCell(randomPos), particleLinearIdx(p_idx));
 }

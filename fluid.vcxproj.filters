@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Hoff\fluid\glad.c">
+    <ClCompile Include="F:\fluid\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\main.cpp">
+    <ClCompile Include="F:\fluid\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Hoff\fluid\debug_utils.hpp">
+    <ClInclude Include="F:\fluid\debug_utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Hoff\fluid\CmakeLists.txt" />
+    <CustomBuild Include="F:\fluid\CmakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{806B9E2D-7E23-3426-AA2C-025E77FF4BDB}</UniqueIdentifier>
+      <UniqueIdentifier>{96156B53-E301-36D4-96FA-C43F90849BFF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{0E181608-7997-3394-8E57-DAF2755EBD36}</UniqueIdentifier>
+      <UniqueIdentifier>{E048F0BE-28F1-3E1E-B45F-D035CF825A4B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

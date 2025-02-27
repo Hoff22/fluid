@@ -28,14 +28,13 @@
 
 using namespace std;
 
-#define TEX_WIDTH 64
-#define TEX_HEIGHT 64 
-#define CELL 8
+#define TEX_N 64
+#define CELL 32
 #define VSYNC 0
 #define STEPS 4
 
 struct shaderData{
-	glm::ivec2 cells[TEX_WIDTH*TEX_HEIGHT];
+	glm::ivec2 cells[TEX_N*TEX_N];
 	GLuint start_idx[CELL*CELL];
 	GLfloat values[14];
 };
@@ -56,12 +55,8 @@ ComputeShader cs_density;
 ComputeShader cs_init;
 shaderData sd;
 
-const char* const vert = "shaders/simple_vert.glsl";
 const char* const screen_vert = "shaders/screen_vert.glsl";
-const char* const part_vert = "shaders/part_vert.glsl";
-const char* const frag = "shaders/simple_frag.glsl";
 const char* const screen_frag = "shaders/screen_frag.glsl";
-const char* const part_frag = "shaders/part_frag.glsl";
 
 const GLfloat quad_vertices[] =
 {
@@ -109,12 +104,12 @@ void optionsWindow(){
 			button = 1;
 		}
 		ImGui::Checkbox("sync sim", &sync_sim);
-		ImGui::SliderFloat("size", &sd.values[7], 0.025, 1.0);
-		ImGui::SliderFloat("gravity", &sd.values[8], 0.0, 10.0);
-		ImGui::SliderFloat("pressure", &sd.values[9], 0.0, 1.0);
-		ImGui::SliderFloat("p factor", &sd.values[10], 0.0, 2.0);
-		ImGui::SliderFloat("radius", &sd.values[11], 0.0, 0.125);
-		ImGui::SliderFloat("f drag", &sd.values[13], 0.995, 0.999);
+		ImGui::SliderFloat("size v[7]", &sd.values[7], 0.025, 1.0);
+		ImGui::SliderFloat("gravity v[8]", &sd.values[8], 0.0, 10.0);
+		ImGui::SliderFloat("pressure v[9]", &sd.values[9], 0.0, 1.0);
+		ImGui::SliderFloat("p factor v[10]", &sd.values[10], 0.0, 2.0);
+		ImGui::SliderFloat("radius v[11]", &sd.values[11], 0.0, 0.125);
+		ImGui::SliderFloat("f drag v[12]", &sd.values[13], 0.995, 0.999);
 
 		// MainWindow::drawCanvas();
 	}
@@ -239,7 +234,7 @@ int initGLFW(GLFWwindow* &window, string program_window_name) {
 }
 
 void drawBackground(){
-	static Shader sh(vert, frag);
+	static Shader sh("shaders/simple.glsl");
 	static vector<GLfloat> positions; 
 	static GLuint positions_VBO = 0;
 
@@ -303,7 +298,7 @@ void drawBackground(){
 }
 
 void drawParticles(){
-	static Shader sh(part_vert, part_frag);
+	static Shader sh("shaders/particle.glsl");
 	static GLuint VAO, VBO, EBO;
 	
 	if(!VAO || !VBO || !EBO){
@@ -337,13 +332,13 @@ void drawParticles(){
 		sizeof(quad_indices) / sizeof(quad_indices[0]),
 		GL_UNSIGNED_INT,
 		0,
-		TEX_WIDTH * TEX_HEIGHT
+		TEX_N * TEX_N
 	);
 }
 
 void drawTextureQuad(GLuint texture){
 	static GLuint VAO, VBO, EBO;
-	static Shader sh(screen_vert, screen_frag);
+	static Shader sh("shaders/screen.glsl");
 	
 	if(!VAO || !VBO || !EBO){
 		glCreateVertexArrays(1, &VAO);
@@ -373,7 +368,7 @@ void drawTextureQuad(GLuint texture){
 }
 
 void drawCircle(glm::vec2 pos, float radius){
-	static Shader sh(vert, frag);
+	static Shader sh("shaders/simple.glsl");
 	static GLuint positions_VBO = 0;
 	vector<GLfloat> positions; 
 	positions.push_back((pos.x / SCREEN_WIDTH) * 2 - 1.0);
@@ -434,14 +429,14 @@ void step(shaderData* sd, ComputeShader* part, ComputeShader* dens, ComputeShade
 void init(shaderData* sd, ComputeShader* init);
 
 void sort_grid(shaderData* sd){
-	sort(sd->cells,sd->cells + TEX_WIDTH*TEX_HEIGHT, [&](glm::ivec2 i, glm::ivec2 j){
+	sort(sd->cells,sd->cells + TEX_N*TEX_N, [&](glm::ivec2 i, glm::ivec2 j){
 		if(i.x == j.x) return i.y < j.y;
 		return i.x < j.x;
 	});
 	for(int i = 0; i < CELL*CELL; i++){
 		sd->start_idx[i] = 0x3f3f3f3f;
 	}
-	for(int i = 0; i < TEX_WIDTH*TEX_HEIGHT; i++){
+	for(int i = 0; i < TEX_N*TEX_N; i++){
 		if(i > 0 && sd->cells[i].x == sd->cells[i-1].x){
 			continue;
 		}
@@ -462,10 +457,9 @@ int main(int argc, char** argv) {
 	initImgui(window);
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	cs_particles = ComputeShader("shaders/particle_compute.glsl");
-	cs_gradient = ComputeShader("shaders/gradient_compute.glsl");
-	cs_density = ComputeShader("shaders/density_compute.glsl");
-	cs_init = ComputeShader("shaders/init_compute.glsl");
+	cs_particles = ComputeShader("shaders/density_compute.glsl", "particleKernel");
+	cs_density = ComputeShader("shaders/density_compute.glsl", "densityKernel");
+	cs_init = ComputeShader("shaders/density_compute.glsl", "initKernel");
 	sd.values[0] = 0;
 	sd.values[1] = 0;
 	sd.values[2] = 100.4;
@@ -474,9 +468,9 @@ int main(int argc, char** argv) {
 	sd.values[6] = SCREEN_HEIGHT;
 	sd.values[7] = 0.06;
 	sd.values[8] = 6.5;
-	sd.values[9] = 0.72;
-	sd.values[10] = 2.0;
-	sd.values[11] = 0.125;
+	sd.values[9] = 1.0;
+	sd.values[10] = 1.0;
+	sd.values[11] = 1.0/CELL; //(0.125);
 	sd.values[12] = 0.1;
 	sd.values[13] = 0.995;
 
@@ -488,8 +482,8 @@ int main(int argc, char** argv) {
 
 //	--
 
-	initTexture(&particlesTex, 0, TEX_WIDTH, TEX_HEIGHT);
-	initTexture(&dens_gradTex, 1, TEX_WIDTH, TEX_WIDTH);
+	initTexture(&particlesTex, 0, TEX_N, TEX_N);
+	initTexture(&dens_gradTex, 1, TEX_N, TEX_N);
 
 	glEnable(GL_CULL_FACE);  
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -509,10 +503,9 @@ int main(int argc, char** argv) {
 
 		if(button){
 			button = 0;
-			cs_particles = ComputeShader("shaders/particle_compute.glsl");
-			cs_density = ComputeShader("shaders/density_compute.glsl");
-			cs_gradient = ComputeShader("shaders/gradient_compute.glsl");
-			cs_init = ComputeShader("shaders/init_compute.glsl");
+			cs_particles = ComputeShader("shaders/density_compute.glsl", "particleKernel");
+			cs_density = ComputeShader("shaders/density_compute.glsl", "densityKernel");
+			cs_init = ComputeShader("shaders/density_compute.glsl", "initKernel");
 
 			// cs_density_global = ComputeShader("shaders/density_compute_global.glsl");
 
@@ -522,7 +515,7 @@ int main(int argc, char** argv) {
 			glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(shaderData), &sd);
 			sort_grid(&sd);
 
-			// for(int i = 0; i < TEX_WIDTH*TEX_HEIGHT; i++){
+			// for(int i = 0; i < TEX_N*TEX_N; i++){
 			// 	if(sd.cells[i].x == 63){
 			// 		cout << i << ": " << "("<< sd.cells[i].x <<", " << sd.cells[i].y << ")" << endl;
 			// 	}
@@ -539,15 +532,15 @@ int main(int argc, char** argv) {
 
 		int t = STEPS;
 		while(!pause && t--){
+			step(&sd, &cs_particles, &cs_density, nullptr);
 			if(!t) little_step = 0;
-			step(&sd, &cs_particles, &cs_density, &cs_gradient);
-			// step(&sd, &cs_particles, &cs_density, &cs_gradient, &cs_density_global);
+			// step(&sd, &cs_particles, &cs_density, nullptr, &cs_density_global);
 		}
 		if(little_step){
-			little_step = 0;
 			while(t--){
-				step(&sd, &cs_particles, &cs_density, &cs_gradient);
+				step(&sd, &cs_particles, &cs_density, nullptr);
 			}
+			little_step = 0;
 		}
 
 		// draw calls
@@ -593,7 +586,7 @@ void init(shaderData* sd, ComputeShader* init){
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, DBO);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(shaderData), sd);
 
-	init->runProgram(TEX_WIDTH / 8, TEX_HEIGHT / 4, 1);
+	init->runProgram(TEX_N / 8, TEX_N / 4, 1);
 }
 
 void step(shaderData* sd, ComputeShader* part, ComputeShader* dens, ComputeShader* grad, ComputeShader* debug){
@@ -614,10 +607,10 @@ void step(shaderData* sd, ComputeShader* part, ComputeShader* dens, ComputeShade
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, DBO);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(shaderData), sd);
 
-	if(debug) debug->runProgram(SCREEN_WIDTH / (8*4), SCREEN_HEIGHT / (4*4), 1);
-	dens->runProgram(TEX_WIDTH / 8, TEX_HEIGHT / 4, 1);
-	// grad->runProgram(TEX_WIDTH / 8, TEX_WIDTH / 4, 1);
-	part->runProgram(TEX_WIDTH / 8, TEX_HEIGHT / 4, 1);
+	// if(debug) debug->runProgram(SCREEN_WIDTH / (8*4), SCREEN_HEIGHT / (4*4), 1);
+	dens->runProgram(TEX_N / 8, TEX_N / 4, 1);
+	// grad->runProgram(TEX_N / 8, TEX_N / 4, 1);
+	part->runProgram(TEX_N / 8, TEX_N / 4, 1);
 
 	glGetBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(shaderData), sd);
 

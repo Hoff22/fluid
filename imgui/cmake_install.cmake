@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Hoff/fluid/imgui
+# Install script for directory: F:/fluid/imgui
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

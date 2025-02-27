@@ -1,6 +1,6 @@
-^C:\USERS\HOFF\FLUID\IMGUI\CMAKELISTS.TXT
+^F:\FLUID\IMGUI\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Hoff/fluid -BC:/Users/Hoff/fluid --check-stamp-file C:/Users/Hoff/fluid/imgui/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/fluid -BF:/fluid --check-stamp-file F:/fluid/imgui/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

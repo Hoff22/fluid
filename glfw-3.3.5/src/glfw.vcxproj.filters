@@ -1,93 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\context.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\init.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\init.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\input.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\input.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\monitor.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\monitor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\vulkan.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\vulkan.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\window.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\window.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_init.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\win32_init.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_joystick.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\win32_joystick.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_monitor.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\win32_monitor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_time.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\win32_time.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_thread.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\win32_thread.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_window.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\win32_window.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\wgl_context.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\wgl_context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\egl_context.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\egl_context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\osmesa_context.c">
+    <ClCompile Include="F:\fluid\glfw-3.3.5\src\osmesa_context.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\internal.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\mappings.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\mappings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\glfw_config.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\glfw_config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\include\GLFW\glfw3.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\include\GLFW\glfw3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\include\GLFW\glfw3native.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\include\GLFW\glfw3native.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_platform.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\win32_platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\win32_joystick.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\win32_joystick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\wgl_context.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\wgl_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\egl_context.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\egl_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\osmesa_context.h">
+    <ClInclude Include="F:\fluid\glfw-3.3.5\src\osmesa_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\CMakeLists.txt" />
+    <CustomBuild Include="F:\fluid\glfw-3.3.5\src\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{806B9E2D-7E23-3426-AA2C-025E77FF4BDB}</UniqueIdentifier>
+      <UniqueIdentifier>{96156B53-E301-36D4-96FA-C43F90849BFF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{0E181608-7997-3394-8E57-DAF2755EBD36}</UniqueIdentifier>
+      <UniqueIdentifier>{E048F0BE-28F1-3E1E-B45F-D035CF825A4B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

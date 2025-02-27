@@ -1,6 +1,6 @@
 #version 460 core
 
-#define CELL 8
+#define CELL 32
 #define N 64
 
 out vec4 FragColor;

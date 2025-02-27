@@ -12,35 +12,40 @@
 
 class ComputeShader
 {
-public:
-	unsigned int ID;
-	ComputeShader(){}
-	// constructor generates the shader on the fly
-	// ------------------------------------------------------------------------
-	ComputeShader(const char* computePath)
-	{
+	inline bool isBlankCharacter(char c) {return c <= 0x20;} 
+	std::string loadStringFile(const char* path){
 		// 1. retrieve the vertex/fragment source code from filePath
-		std::string computeCode;
-		std::ifstream cShaderFile;
+		std::string str;
+		std::ifstream f;
 		// ensure ifstream objects can throw exceptions:
-		cShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		f.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		try
 		{
 			// open files
-			cShaderFile.open(computePath);
+			f.open(path);
 			std::stringstream cShaderStream;
 			// read file's buffer contents into streams
-			cShaderStream << cShaderFile.rdbuf();
+			cShaderStream << f.rdbuf();
 			// close file handlers
-			cShaderFile.close();
+			f.close();
 			// convert stream into string
-			computeCode = cShaderStream.str();
+			str = cShaderStream.str();
 		}
 		catch (std::ifstream::failure& e)
 		{
 			std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() << std::endl;
 		}
-		const char* cShaderCode = computeCode.c_str();
+		// sanitizing.
+		while(isBlankCharacter(str.back())) str.pop_back();
+		for(int i = 0; i < str.size(); i++){
+			if(!isBlankCharacter(str[i])){
+				str = str.substr(i, (int)str.size() - i);
+				break;
+			}
+		}
+		return str;
+	}
+	void compileAndLinkProgram(const char* cShaderCode){
 		// 2. compile shaders
 		unsigned int compute;
 		// vertex shader
@@ -56,6 +61,28 @@ public:
 		// delete the shaders as they're linked into our program now and no longer necessary
 		glDeleteShader(compute);
 	}
+public:
+	unsigned int ID;
+	ComputeShader(){}
+	// constructor generates the shader on the fly
+	// ------------------------------------------------------------------------
+	ComputeShader(const char* computePath)
+	{
+		// 1. retrieve the vertex/fragment source code from filePath
+		std::string computeCode = loadStringFile(computePath);
+		const char* cShaderCode = computeCode.c_str();
+		compileAndLinkProgram(cShaderCode);
+	}
+	ComputeShader(const char* computePath, const char* entryPoint){
+		std::string entryPointName = entryPoint;
+		// pre-pending the new entry point
+		std::string shaderCode = loadStringFile(computePath);
+		std::string versionDirective = shaderCode.substr(0, 12);
+		shaderCode = shaderCode.substr(12, (int)shaderCode.size()-12);
+		shaderCode = versionDirective + "\n#define " + entryPointName + " main\n" + shaderCode;
+		compileAndLinkProgram(shaderCode.c_str());
+	}
+	
 	// activate the shader
 	// ------------------------------------------------------------------------
 	void use()

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/Hoff/fluid/glfw-3.3.5
+# Install script for directory: F:/fluid/glfw-3.3.5
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,17 +34,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/Hoff/fluid/glfw-3.3.5/src/cmake_install.cmake")
+  include("F:/fluid/glfw-3.3.5/src/cmake_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "C:/Users/Hoff/fluid/glfw-3.3.5/include/GLFW" FILES_MATCHING REGEX "/glfw3\\.h$" REGEX "/glfw3native\\.h$")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "F:/fluid/glfw-3.3.5/include/GLFW" FILES_MATCHING REGEX "/glfw3\\.h$" REGEX "/glfw3native\\.h$")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES
-    "C:/Users/Hoff/fluid/glfw-3.3.5/src/glfw3Config.cmake"
-    "C:/Users/Hoff/fluid/glfw-3.3.5/src/glfw3ConfigVersion.cmake"
+    "F:/fluid/glfw-3.3.5/src/glfw3Config.cmake"
+    "F:/fluid/glfw-3.3.5/src/glfw3ConfigVersion.cmake"
     )
 endif()
 
@@ -52,7 +52,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3/glfw3Targets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3/glfw3Targets.cmake"
-         "C:/Users/Hoff/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
+         "F:/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3/glfw3Targets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -61,22 +61,22 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "C:/Users/Hoff/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "F:/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets.cmake")
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "C:/Users/Hoff/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-debug.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "F:/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-debug.cmake")
   endif()
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Mm][Ii][Nn][Ss][Ii][Zz][Ee][Rr][Ee][Ll])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "C:/Users/Hoff/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-minsizerel.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "F:/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-minsizerel.cmake")
   endif()
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ww][Ii][Tt][Hh][Dd][Ee][Bb][Ii][Nn][Ff][Oo])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "C:/Users/Hoff/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-relwithdebinfo.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "F:/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-relwithdebinfo.cmake")
   endif()
   if("${CMAKE_INSTALL_CONFIG_NAME}" MATCHES "^([Rr][Ee][Ll][Ee][Aa][Ss][Ee])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "C:/Users/Hoff/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-release.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/glfw3" TYPE FILE FILES "F:/fluid/glfw-3.3.5/CMakeFiles/Export/lib/cmake/glfw3/glfw3Targets-release.cmake")
   endif()
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "C:/Users/Hoff/fluid/glfw-3.3.5/src/glfw3.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "F:/fluid/glfw-3.3.5/src/glfw3.pc")
 endif()
 

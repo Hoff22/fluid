@@ -1,6 +1,6 @@
-^C:\USERS\HOFF\FLUID\CMAKEFILES\83E5DA93F740717A84A82A7EC5F7738F\GENERATE.STAMP.RULE
+^F:\FLUID\CMAKEFILES\9B6250FC439AF30995B0130056D57581\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Hoff/fluid -BC:/Users/Hoff/fluid --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/Hoff/fluid/fluid.sln
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/fluid -BF:/fluid --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file F:/fluid/fluid.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

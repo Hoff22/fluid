@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Hoff\fluid\CMakeFiles\db7c92a921dd33974d5bfb8313c8c716\update_mappings.rule">
+    <CustomBuild Include="F:\fluid\CMakeFiles\4216e94fff4d792319a5129f67b6aabe\update_mappings.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\CMakeLists.txt" />
+    <CustomBuild Include="F:\fluid\glfw-3.3.5\src\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\mappings.h.in">
+    <None Include="F:\fluid\glfw-3.3.5\src\mappings.h.in">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="C:\Users\Hoff\fluid\glfw-3.3.5\CMake\GenerateMappings.cmake" />
-    <None Include="C:\Users\Hoff\fluid\glfw-3.3.5\src\CMakeFiles\update_mappings" />
+    <None Include="F:\fluid\glfw-3.3.5\CMake\GenerateMappings.cmake" />
+    <None Include="F:\fluid\glfw-3.3.5\src\CMakeFiles\update_mappings" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{A52C1578-9325-3577-9E41-F710D569FBA7}</UniqueIdentifier>
+      <UniqueIdentifier>{91E1EA1E-CBEB-3D6A-94B8-BF243BCEA0B3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{806B9E2D-7E23-3426-AA2C-025E77FF4BDB}</UniqueIdentifier>
+      <UniqueIdentifier>{96156B53-E301-36D4-96FA-C43F90849BFF}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

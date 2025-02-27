@@ -1,6 +1,6 @@
 #version 460
 
-#define CELL 8
+#define CELL 32
 #define N 64
 
 layout(local_size_x = 8, local_size_y = 4, local_size_z = 1) in;

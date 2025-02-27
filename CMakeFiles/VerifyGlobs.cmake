@@ -3,40 +3,40 @@
 cmake_policy(SET CMP0009 NEW)
 
 # fluid_SRC at CMakeLists.txt:5 (file)
-file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/Hoff/fluid/*.c")
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "F:/fluid/*.c")
 set(OLD_GLOB
-  "C:/Users/Hoff/fluid/glad.c"
+  "F:/fluid/glad.c"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/Users/Hoff/fluid/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "F:/fluid/CMakeFiles/cmake.verify_globs")
 endif()
 
 # fluid_SRC at CMakeLists.txt:5 (file)
-file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/Hoff/fluid/*.cpp")
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "F:/fluid/*.cpp")
 set(OLD_GLOB
-  "C:/Users/Hoff/fluid/main.cpp"
+  "F:/fluid/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/Users/Hoff/fluid/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "F:/fluid/CMakeFiles/cmake.verify_globs")
 endif()
 
 # fluid_SRC at CMakeLists.txt:5 (file)
-file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/Hoff/fluid/*.h")
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "F:/fluid/*.h")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/Users/Hoff/fluid/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "F:/fluid/CMakeFiles/cmake.verify_globs")
 endif()
 
 # fluid_SRC at CMakeLists.txt:5 (file)
-file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/Hoff/fluid/*.hpp")
+file(GLOB NEW_GLOB LIST_DIRECTORIES true "F:/fluid/*.hpp")
 set(OLD_GLOB
-  "C:/Users/Hoff/fluid/debug_utils.hpp"
+  "F:/fluid/debug_utils.hpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/Users/Hoff/fluid/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "F:/fluid/CMakeFiles/cmake.verify_globs")
 endif()

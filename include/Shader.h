@@ -18,6 +18,62 @@
 
 class Shader
 {
+    inline bool isBlankCharacter(char c) {return c <= 0x20;} 
+    std::string loadStringFile(const char* path){
+        // 1. retrieve the vertex/fragment source code from filePath
+        std::string str;
+        std::ifstream f;
+        // ensure ifstream objects can throw exceptions:
+        f.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try
+        {
+            // open files
+            f.open(path);
+            std::stringstream cShaderStream;
+            // read file's buffer contents into streams
+            cShaderStream << f.rdbuf();
+            // close file handlers
+            f.close();
+            // convert stream into string
+            str = cShaderStream.str();
+        }
+        catch (std::ifstream::failure& e)
+        {
+            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() << std::endl;
+        }
+        // sanitizing.
+        while(isBlankCharacter(str.back())) str.pop_back();
+        for(int i = 0; i < str.size(); i++){
+            if(!isBlankCharacter(str[i])){
+                str = str.substr(i, (int)str.size() - i);
+                break;
+            }
+        }
+        return str;
+    }
+    void compileAndLinkProgram(const char* vShaderCode, const char* fShaderCode){
+        // 2. compile shaders
+        unsigned int vertex, fragment;
+        // vertex shader
+        vertex = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vertex, 1, &vShaderCode, NULL);
+        glCompileShader(vertex);
+        checkCompileErrors(vertex, "VERTEX");
+        // fragment Shader
+        fragment = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fragment, 1, &fShaderCode, NULL);
+        glCompileShader(fragment);
+        checkCompileErrors(fragment, "FRAGMENT");
+        // shader Program
+        ID = glCreateProgram();
+        glAttachShader(ID, vertex);
+        glAttachShader(ID, fragment);
+        glLinkProgram(ID);
+        checkCompileErrors(ID, "PROGRAM");
+        // delete the shaders as they're linked into our program now and no longer necessary
+        glDeleteShader(vertex);
+        glDeleteShader(fragment);
+    }
 public:
     unsigned int ID;
     // constructor generates the shader on the fly
@@ -56,27 +112,30 @@ public:
         }
         const char* vShaderCode = vertexCode.c_str();
         const char* fShaderCode = fragmentCode.c_str();
-        // 2. compile shaders
-        unsigned int vertex, fragment;
-        // vertex shader
-        vertex = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertex, 1, &vShaderCode, NULL);
-        glCompileShader(vertex);
-        checkCompileErrors(vertex, "VERTEX");
-        // fragment Shader
-        fragment = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragment, 1, &fShaderCode, NULL);
-        glCompileShader(fragment);
-        checkCompileErrors(fragment, "FRAGMENT");
-        // shader Program
-        ID = glCreateProgram();
-        glAttachShader(ID, vertex);
-        glAttachShader(ID, fragment);
-        glLinkProgram(ID);
-        checkCompileErrors(ID, "PROGRAM");
-        // delete the shaders as they're linked into our program now and no longer necessary
-        glDeleteShader(vertex);
-        glDeleteShader(fragment);
+        
+        compileAndLinkProgram(vShaderCode, fShaderCode);
+    }
+    Shader(const char* shaderPath, const std::string& vertexEntryPoint, const std::string& fragmentEntryPoint){
+        std::string shaderCode = loadStringFile(shaderPath);
+        // pre-pending the new entry point
+        std::string versionDirective = shaderCode.substr(0, 12);
+        shaderCode = shaderCode.substr(12, (int)shaderCode.size()-12);
+        
+        std::string vertexShaderCode = versionDirective + "\n#define " + vertexEntryPoint + " main\n" + shaderCode;
+        std::string fragmentShaderCode = versionDirective + "\n#define " + fragmentEntryPoint + " main\n" + shaderCode;
+        
+        compileAndLinkProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str());
+    }
+    Shader(const char* shaderPath){
+        std::string shaderCode = loadStringFile(shaderPath);
+        // pre-pending the new entry point
+        std::string versionDirective = shaderCode.substr(0, 12);
+        shaderCode = shaderCode.substr(12, (int)shaderCode.size()-12);
+        
+        std::string vertexShaderCode = versionDirective + "\n#define " + "H_VERT" + " H_VERT\n" + shaderCode;
+        std::string fragmentShaderCode = versionDirective + "\n#define " + "H_FRAG" + " H_FRAG\n" + shaderCode;
+        
+        compileAndLinkProgram(vertexShaderCode.c_str(), fragmentShaderCode.c_str());
     }
     // activate the shader
     // ------------------------------------------------------------------------
