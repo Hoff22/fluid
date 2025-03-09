@@ -31,7 +31,7 @@ using namespace std;
 #define TEX_N 64
 #define CELL 32
 #define VSYNC 0
-#define STEPS 4
+#define STEPS 1
 
 struct shaderData{
 	glm::ivec2 cells[TEX_N*TEX_N];

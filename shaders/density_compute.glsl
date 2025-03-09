@@ -1,6 +1,7 @@
 #version 460   
 
 #define CELL 32
+#define STEPS 1
 #define N 64
 
 layout(local_size_x = 8, local_size_y = 4, local_size_z = 1) in;
@@ -131,22 +132,27 @@ vec2 compute_gradient(vec2 pos, float current_dens, ivec2 idx){
 	return g;
 }
 
+void particleKernel(void);
+
 // entry point
 void densityKernel(void){
 	ivec2 dims = imageSize(parts);
 	ivec2 p_idx = ivec2(gl_GlobalInvocationID.xy);
 	float delta_step = values[4];
 
-	vec4 p = imageLoad(parts, p_idx);
+	int steps = STEPS; // this is a hack and technically incorrect
+	while((steps--) > 0){
+		vec4 p = imageLoad(parts, p_idx);
 
-	vec2 p_pos = p.xy;
+		vec2 p_pos = p.xy;
 
-	float current_dens = imageLoad(dens_grad, p_idx).x;
+		float current_dens = imageLoad(dens_grad, p_idx).x;
 
-	float d = compute_density(p_pos + p.zw * 1.0/60.0, p_idx);
-	vec2 g = compute_gradient(p_pos + p.zw * 1.0/60.0, current_dens, p_idx);
+		float d = compute_density(p_pos + p.zw * 1.0/60.0, p_idx);
+		vec2 g = compute_gradient(p_pos + p.zw * 1.0/60.0, current_dens, p_idx);
 
-	imageStore(dens_grad, p_idx, vec4(d / (N*N), g, 1.0) );
+		imageStore(dens_grad, p_idx, vec4(d / (N*N), g, 1.0) );
+	}
 }
 
 void particleKernel(void){
